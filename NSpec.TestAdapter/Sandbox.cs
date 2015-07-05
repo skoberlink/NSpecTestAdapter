@@ -24,8 +24,14 @@ namespace NSpec.TestAdapter
 
 			var solutionDirectory = FindPackagesDirectory(projectDirectory);
 
-			// Can only continue if valid test project
-			if (string.IsNullOrEmpty(solutionDirectory)) return;
+            if (string.IsNullOrEmpty(solutionDirectory))
+            {
+                solutionDirectory = assemblyDirectory.Parent.FullName;
+                if (string.IsNullOrEmpty(solutionDirectory))
+                {
+                    return;
+                }
+            }
 
 			var nSpecPath = FindNSpec(projectDirectory);
 			var privateBinPath = string.Join(";",
