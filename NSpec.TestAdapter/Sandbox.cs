@@ -28,9 +28,10 @@ namespace NSpec.TestAdapter
 			if (string.IsNullOrEmpty(solutionDirectory)) return;
 
 			var nSpecPath = FindNSpec(projectDirectory);
-			var privateBinPath = string.Join(";",
+			var privateBinPath = string.Join(";", new string[]{
 				nSpecPath,
-				assemblyDirectory.FullName.Remove(0, solutionDirectory.Length + 1));
+				assemblyDirectory.FullName.Remove(0, solutionDirectory.Length + 1)
+            });
 
 			var setup = new AppDomainSetup
 			{
@@ -62,7 +63,7 @@ namespace NSpec.TestAdapter
 		private string FindPackagesDirectory(DirectoryInfo projectDirectory)
 		{
 			if (projectDirectory == null) return null;
-			var anyDirectories = projectDirectory.EnumerateDirectories("packages").Any();
+			var anyDirectories = projectDirectory.GetDirectories("packages").Any();
 			return anyDirectories
 				? projectDirectory.FullName
 				: FindPackagesDirectory(projectDirectory.Parent);
